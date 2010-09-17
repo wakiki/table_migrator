@@ -1,3 +1,4 @@
+require 'ruby-debug'
 module TableMigrator
 
   class ChangeTableStrategy < CopyStrategy
@@ -23,7 +24,9 @@ module TableMigrator
     end
 
     def base_copy_query(insert_or_replace)
-      copied = column_names.reject {|c| renames[c].nil? }
+      # copied = column_names.reject {|c| renames[c].nil? }
+      # wierdly renames returns something like this: => {"[:foo]"=>nil, "title"=>"totle"}
+      copied = column_names.reject {|c| renames["[:#{c}]"].nil? }
       renamed = copied.map {|c| renames[c] }
       renamed = renamed.map {|c| "`#{c}`"}
       copied = copied.map {|c| "`#{c}`"}
