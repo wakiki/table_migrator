@@ -23,9 +23,9 @@ module TableMigrator
       info 'Executing dry run...' if dry_run?
 
       self.create_new_table if create_temp_table?
-
+      
       # is there any data to copy?
-      if dry_run? or execute("SELECT * FROM `#{table_name}` LIMIT 1").fetch_row
+      if dry_run? or execute("SELECT * FROM `#{table_name}` LIMIT 1").first
 
         # copy bulk of table data
         self.paged_copy if create_temp_table?
